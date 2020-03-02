@@ -14,16 +14,17 @@
 
 
 
-### 调用测试方法
+### 1、调用测试方法
 
 Test/smtpTest.java，输入相关信息，输入邮箱授权码，IDEA点击运行测试
 
-### 注意点
 
-**先拉取（pull），再提交（commit+push）**，一定要注意！！！
-
-### 调用lib中的jar包方法
+### 2、调用lib中的jar包方法
 IDEA --> project structure --> module --> + --> 选择lib中的jar包
 
+### 3、谷歌浏览器可以下载octotree插件。可以树形展示github目录结构
 
 
+### 4、注意点
+
+**先拉取（pull），再提交（commit+push）**，一定要注意！！！
