@@ -10,7 +10,6 @@ import java.util.List;
  * @date       : 2020/2/29
  */
 
-//TODO 暂时只设置了一个收件人（以后改善为发送给多用户）
 
 public class MailBody {
     // 发件人
@@ -18,7 +17,7 @@ public class MailBody {
     // 密码(授权码)
     private String sendUserPwd;
     // 收件人
-    private String recUser;
+    private List<String> recUsers;
     // 主题
     private String mailSubject;
     // 附件地址
@@ -31,10 +30,10 @@ public class MailBody {
     public MailBody() {
     }
 
-    public MailBody(String sendUser, String sendUserPwd, String recUser, String mailSubject, List<String> filesAddr, String mainText, Date sendDate) {
+    public MailBody(String sendUser, String sendUserPwd, List<String> recUsers, String mailSubject, List<String> filesAddr, String mainText, Date sendDate) {
         this.sendUser = sendUser;
         this.sendUserPwd = sendUserPwd;
-        this.recUser = recUser;
+        this.recUsers = recUsers;
         this.mailSubject = mailSubject;
         this.filesAddr = filesAddr;
         this.mainText = mainText;
@@ -55,6 +54,14 @@ public class MailBody {
 
     public void setSendUserPwd(String sendUserPwd) {
         this.sendUserPwd = sendUserPwd;
+    }
+
+    public List<String> getRecUsers() {
+        return recUsers;
+    }
+
+    public void setRecUsers(List<String> recUsers) {
+        this.recUsers = recUsers;
     }
 
     public String getMailSubject() {
@@ -87,13 +94,5 @@ public class MailBody {
 
     public void setSendDate(Date sendDate) {
         this.sendDate = sendDate;
-    }
-
-    public String getRecUser() {
-        return recUser;
-    }
-
-    public void setRecUser(String recUser) {
-        this.recUser = recUser;
     }
 }
