@@ -45,6 +45,7 @@ public class MailUtil {
      */
     public static boolean checkAccount(String user, String pwd){
         //TODO 验证用户名和密码
+
         return false;
     }
 }

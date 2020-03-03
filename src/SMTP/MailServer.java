@@ -10,10 +10,7 @@ public class MailServer {
 
     private String smtpUrl;
     private String smtpPort = "25"; // smtp端口默认为25
-    // 发件人
-    private String sendUser;
-    // 密码(授权码)
-    private String sendUserPwd;
+
 
     public MailServer(String smtpUrl, String smtpPort) {
         this.smtpUrl = smtpUrl;
