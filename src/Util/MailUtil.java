@@ -2,6 +2,8 @@ package Util;
 
 import SMTP.DeliveredState;
 
+import java.io.File;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -75,5 +77,39 @@ public class MailUtil {
         //TODO 验证用户名和密码
 
         return false;
+    }
+
+    /**
+     *
+     * 获取文件路径
+     *
+     * @author  csy
+     * @param  files -- 多个文件
+     * @param filesPath -- 文件路径的list
+     */
+    public static void getFilesPath(File[] files,List<String> filesPath){
+        for(int i = 0;i < files.length;i++){
+            if(files[i].exists() && files[i].isFile()){
+                filesPath.add(files[i].getAbsolutePath());
+            }
+        }
+    }
+
+    /**
+     *
+     * 获取文件路径
+     *
+     * @author  csy
+     * @param  files -- 多个文件
+     * @return 多个文件名字组成的字符串
+     */
+    public static String getFilesName(File[] files){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0;i < files.length;i++){
+            if(files[i].exists() && files[i].isFile()){
+                stringBuilder.append(files[i].getName() + ";");
+            }
+        }
+        return stringBuilder.toString();
     }
 }

@@ -11,6 +11,7 @@ import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -43,6 +44,9 @@ public class MainGUI extends JFrame implements ActionListener {
     //上传附件按钮
     public JButton uploadButton;
     public JLabel fileLable;
+    public JFileChooser fileChooser;
+    public File[] files;
+    public List<String> filesAddress = new ArrayList<String>();
     //清除文件按钮
     public JButton deleteFile;
     //传文件进度
@@ -178,6 +182,10 @@ public class MainGUI extends JFrame implements ActionListener {
         y1 = y1 + 40;
         uploadButton.setBounds(20,y1,80,height1);
         sendPanel.add(uploadButton);
+        //上传文件
+        uploadButton.addActionListener(this);
+
+
 
         fileLable = new JLabel();
         y2 = y2 + 40;
@@ -190,13 +198,14 @@ public class MainGUI extends JFrame implements ActionListener {
         deleteFile.setBounds(20,y1,80,height1);
         sendPanel.add(deleteFile);
         deleteFile.setEnabled(false);
+        deleteFile.addActionListener(this);
 
-        progressBar = new JProgressBar();
-        y2 = y2 + 40;
-        progressBar.setBounds(x2,y2+5,width2,height2-5);
-        //进度条中间显示的百分数
-        progressBar.setStringPainted(true);
-        sendPanel.add(progressBar);
+//        progressBar = new JProgressBar();
+          y2 = y2 + 40;
+//        progressBar.setBounds(x2,y2+5,width2,height2-5);
+//        //进度条中间显示的百分数
+//        progressBar.setStringPainted(true);
+//        sendPanel.add(progressBar);
 
 
 
@@ -218,6 +227,7 @@ public class MainGUI extends JFrame implements ActionListener {
         y1 = y1+270;
         sendButton.setBounds(x1,y1,width1,height1);
         sendPanel.add(sendButton);
+        //发送邮件
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -274,15 +284,11 @@ public class MainGUI extends JFrame implements ActionListener {
 
         if(MailUtil.checkMailFormat(addresses))
         {
-            MailBody mailBody = new MailBody(sender,pwd,recs,subject,null,mainText,null);
+            MailBody mailBody = new MailBody(sender,pwd,recs,subject,filesAddress,mainText,null);
             MailServer mailServer = new MailServer(smtpUrl,port);
             SendController sendController = new SendController();
             String res = sendController.sendMail(mailServer,mailBody);
-            if(res.equals("发送成功")){
-                JOptionPane.showMessageDialog(null, "发送成功", "成功", JOptionPane.INFORMATION_MESSAGE);
-            }else {
-                JOptionPane.showMessageDialog(null, "发送失败", "错误", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, res, "提示", JOptionPane.INFORMATION_MESSAGE);
 
         }
         else {
@@ -294,6 +300,36 @@ public class MainGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+            Object key = e.getSource();
+            //上传文件
+            if(key.equals(uploadButton)){
+                //文件选择器
+                fileChooser = new JFileChooser();
+                //可多选
+                fileChooser.setMultiSelectionEnabled(true);
+                //只能选择文件
+                fileChooser.setFileSelectionMode(0);
+                int res = fileChooser.showOpenDialog(this);
+                // 判断用户单击的是否为“打开”按钮
+                if(res == fileChooser.APPROVE_OPTION){
+                    //获取选中的所有文件
+                    files = fileChooser.getSelectedFiles();
+                    MailUtil.getFilesPath(files,filesAddress);
+                    String showFilesName = MailUtil.getFilesName(files);
+                    if(fileLable.getText().equals("文件名")){
+                        fileLable.setText("");
+                    }
+                    fileLable.setText(fileLable.getText() + showFilesName);
+                    deleteFile.setEnabled(true);
+                }
+            }
+            //清除文件
+            if(key.equals(deleteFile)){
+                filesAddress.clear();
+                fileLable.setText("");
+                deleteFile.setEnabled(false);
+            }
 
     }
+
 }
