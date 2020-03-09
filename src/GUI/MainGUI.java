@@ -4,7 +4,6 @@ import SMTP.MailBody;
 import SMTP.MailServer;
 import SMTP.SendController;
 import Util.MailUtil;
-import javafx.scene.control.ComboBox;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 import javax.swing.*;

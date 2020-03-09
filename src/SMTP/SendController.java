@@ -1,5 +1,7 @@
 package SMTP;
 
+import Util.MailUtil;
+
 /**
  *
  * @author     : xsy
@@ -22,13 +24,13 @@ public class SendController {
             SendService sendService = new SendService();
             //发送邮件
             sendService.send(mailServer,mailBody);
-            return "发送成功";
+            //判断返回的状态
+            return MailUtil.judgeSMTPState(sendService.getState());
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
         }
     }
-
 
 
 

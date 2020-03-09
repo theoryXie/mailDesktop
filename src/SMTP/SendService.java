@@ -1,6 +1,5 @@
 package SMTP;
 
-import com.sun.mail.util.MailSSLSocketFactory;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -9,7 +8,6 @@ import javax.mail.event.TransportEvent;
 import javax.mail.event.TransportListener;
 import javax.mail.internet.*;
 import java.io.File;
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,6 +18,9 @@ import java.util.Properties;
  * @date       : 2020/3/2
  */
 public class SendService {
+
+    //邮件发送后的状态
+    private DeliveredState state = DeliveredState.INITIAL;
 
     /**
      * 创建邮件
@@ -65,6 +66,14 @@ public class SendService {
             return mail;
     }
 
+    /**
+     * 发送邮件，监听消息
+     *
+     * @author  xsy
+     * @param  server -- 会话
+     * @param  mailBody -- 邮件主体
+     * @return message -- 封装好的邮件
+     */
     public void send(MailServer server,MailBody mailBody) throws Exception {
         Properties prop = new Properties();
         //协议(smtp)
@@ -104,16 +113,44 @@ public class SendService {
         //6.给transport添加监听，以便知道发送结果
         tp.addTransportListener(new TransportListener() {
             public void messageDelivered(TransportEvent arg0) {
-                System.out.println(arg0.getMessage());
+                //邮件发送成功
+                state = DeliveredState.MESSAGE_DELIVERED;
             }
             public void messageNotDelivered(TransportEvent arg0) {
-                System.out.println(arg0.getMessage());
+                //邮件发送失败
+                state = DeliveredState.MESSAGE_NOT_DELIVERED;
             }
             public void messagePartiallyDelivered(TransportEvent arg0) {
-                System.out.println(arg0.getMessage());
+                //邮件部分发送成功
+                state = DeliveredState.MESSAGE_PARTIALLY_DELIVERED;
             }
         });
         //7.发送邮件到所有用户
         tp.sendMessage(message,message.getAllRecipients());
+        //8.等待返回的消息
+        waitForReady();
+    }
+
+    /**
+     * 等待发送邮件返回的消息
+     *
+     * @author  xsy
+     */
+    synchronized void waitForReady() throws InterruptedException {
+        if (state == DeliveredState.INITIAL) {
+            wait();//阻塞线程，等待消息
+        }
+        else
+            notify();//激活线程
+    }
+
+
+    /**
+     *
+     * @author  xsy
+     * @return 邮件状态
+     */
+    synchronized DeliveredState getState(){
+        return state;
     }
 }
