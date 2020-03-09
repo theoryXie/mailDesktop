@@ -13,18 +13,24 @@
 | src/SMTP/sendController.java | 前端与后台交互的接口 |
 
 
+### 1、调用lib中的jar包方法
+```
+IDEA --> project structure --> module --> + -->libraries- -> 选择lib
+```
 
-### 1、调用测试方法
-
-Test/smtpTest.java，输入相关信息，输入邮箱授权码，IDEA点击运行测试
-
-
-### 2、调用lib中的jar包方法
-IDEA --> project structure --> module --> + --> 选择lib中的jar包
-
-### 3、谷歌浏览器可以下载octotree插件。可以树形展示github目录结构
+### 2、注意点
+```
+先拉取（pull），再提交（commit+push），一定要注意！！！
+```
 
 
-### 4、注意点
-
-**先拉取（pull），再提交（commit+push）**，一定要注意！！！
+### 3、gihub注释格式
+```
+feat：新功能（feature）
+fix：修补bug
+docs：文档（documentation）
+style： 格式（不影响代码运行的变动）
+refactor：重构（即不是新增功能，也不是修改bug的代码变动）
+test：增加测试
+chore：构建过程或辅助工具的变动
+```
