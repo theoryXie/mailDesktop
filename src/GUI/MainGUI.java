@@ -231,8 +231,13 @@ public class MainGUI extends JFrame implements ActionListener {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SendMail();
-
+                //开启一个线程，避免阻塞整个界面
+                Thread t1= new Thread(){
+                    public void run(){
+                       SendMail();
+                    }
+                };
+                t1.start();
             }
         });
 

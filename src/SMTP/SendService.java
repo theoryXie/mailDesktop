@@ -115,14 +115,17 @@ public class SendService {
             public void messageDelivered(TransportEvent arg0) {
                 //邮件发送成功
                 state = DeliveredState.MESSAGE_DELIVERED;
+                notifyAll();
             }
             public void messageNotDelivered(TransportEvent arg0) {
                 //邮件发送失败
                 state = DeliveredState.MESSAGE_NOT_DELIVERED;
+                notifyAll();
             }
             public void messagePartiallyDelivered(TransportEvent arg0) {
                 //邮件部分发送成功
                 state = DeliveredState.MESSAGE_PARTIALLY_DELIVERED;
+                notifyAll();
             }
         });
         //7.发送邮件到所有用户
@@ -140,8 +143,6 @@ public class SendService {
         if (state == DeliveredState.INITIAL) {
             wait();//阻塞线程，等待消息
         }
-        else
-            notify();//激活线程
     }
 
 
