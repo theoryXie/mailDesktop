@@ -38,32 +38,7 @@ public class MailUtil {
     }
 
 
-    /**
-     *
-     * @author  xsy
-     * @param  state -- 邮件发送后的状态
-     * @return 状态对应的字符串
-     */
-    public static String judgeSMTPState(DeliveredState state){
-        String ans = "";
-        switch (state){
-            case INITIAL:
-                ans = "邮件尚在初始化！";
-                break;
-            case MESSAGE_DELIVERED:
-                ans = "邮件发送成功！";
-                break;
-            case MESSAGE_NOT_DELIVERED:
-                ans = "邮件发送失败！";
-                break;
-            case MESSAGE_PARTIALLY_DELIVERED:
-                ans = "邮件部分发送成功！";
-                break;
-            default:
-                ans = "异常！！！";
-        }
-        return ans;
-    }
+
 
     /**
      *

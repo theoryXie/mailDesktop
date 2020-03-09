@@ -19,8 +19,8 @@ import java.util.Properties;
  */
 public class SendService {
 
-    //邮件发送后的状态
-    private DeliveredState state = DeliveredState.INITIAL;
+    MailListener mailListener = new MailListener();//监听邮件状态
+
 
     /**
      * 创建邮件
@@ -74,7 +74,7 @@ public class SendService {
      * @param  mailBody -- 邮件主体
      * @return message -- 封装好的邮件
      */
-    public void send(MailServer server,MailBody mailBody) throws Exception {
+    public String send(MailServer server,MailBody mailBody) throws Exception {
         Properties prop = new Properties();
         //协议(smtp)
         prop.setProperty("mail.transport.protocol","smtp");
@@ -114,44 +114,52 @@ public class SendService {
         tp.addTransportListener(new TransportListener() {
             public void messageDelivered(TransportEvent arg0) {
                 //邮件发送成功
-                state = DeliveredState.MESSAGE_DELIVERED;
-                notifyAll();
+                mailListener.setState(DeliveredState.MESSAGE_DELIVERED);
             }
             public void messageNotDelivered(TransportEvent arg0) {
                 //邮件发送失败
-                state = DeliveredState.MESSAGE_NOT_DELIVERED;
-                notifyAll();
+                mailListener.setState(DeliveredState.MESSAGE_NOT_DELIVERED);
             }
             public void messagePartiallyDelivered(TransportEvent arg0) {
                 //邮件部分发送成功
-                state = DeliveredState.MESSAGE_PARTIALLY_DELIVERED;
-                notifyAll();
+                mailListener.setState(DeliveredState.MESSAGE_PARTIALLY_DELIVERED);
             }
         });
         //7.发送邮件到所有用户
         tp.sendMessage(message,message.getAllRecipients());
         //8.等待返回的消息
-        waitForReady();
+        mailListener.waitForReady();
+        return judgeSMTPState(mailListener.getState());
     }
 
+
     /**
-     * 等待发送邮件返回的消息
      *
      * @author  xsy
+     * @param  state -- 邮件发送后的状态
+     * @return 状态对应的字符串
      */
-    synchronized void waitForReady() throws InterruptedException {
-        if (state == DeliveredState.INITIAL) {
-            wait();//阻塞线程，等待消息
+    public String judgeSMTPState(DeliveredState state){
+        String ans = "";
+        switch (state){
+            case INITIAL:
+                ans = "邮件尚在初始化！";
+                break;
+            case MESSAGE_DELIVERED:
+                ans = "邮件发送成功！";
+                break;
+            case MESSAGE_NOT_DELIVERED:
+                ans = "邮件发送失败！";
+                break;
+            case MESSAGE_PARTIALLY_DELIVERED:
+                ans = "邮件部分发送成功！";
+                break;
+            default:
+                ans = "异常！！！";
         }
+        return ans;
     }
 
 
-    /**
-     *
-     * @author  xsy
-     * @return 邮件状态
-     */
-    synchronized DeliveredState getState(){
-        return state;
-    }
+
 }
