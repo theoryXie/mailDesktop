@@ -12,24 +12,24 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 public class receiveUI extends JFrame implements ActionListener {
 
     public JTabbedPane jtp = new JTabbedPane(JTabbedPane.TOP);
-    public JPanel jp1,jp2;
-    public JList jl;
-    public JScrollPane jsp;
-    public JLabel jlb1, jlb2, jlb3, jlb4;
-    public JTextField tt1, tt2, tt3;
-    public JPasswordField jpf;
-    public JButton button1, button2, button3, button4;
+    public JPanel rcvPanel;
+    //接收邮件列表
+    public JList rcvMailList;
+    //邮件显示容器
+    public JScrollPane mailPane;
+    //标签
+    public JLabel popLabel, portLabel, rcvrLabel, pswdLabel;
+    //输入框
+    public JTextField popText, portText, rcvrText;
+    public JPasswordField pswdText;
+    //接收、关闭按钮
+    public JButton rcvButton, closeButton;
 
     public static DefaultListModel mailData = new DefaultListModel();
-
-    public MailUtil mu = new MailUtil();
 
     //收件人
     public String sendUser;
     public Boolean sendUserIsOk2 = true;
-    //默认设置
-
-
 
     public static void main (String[] args){
         EventQueue.invokeLater(new Runnable(){
@@ -81,36 +81,36 @@ public class receiveUI extends JFrame implements ActionListener {
     }
 
     private void init(){
-        jp2 = new JPanel();
-        jp2.setLayout(null);
+        rcvPanel = new JPanel();
+        rcvPanel.setLayout(null);
 
-        jlb1 = new JLabel("POP服务：");
-        jlb1.setBounds(40,20,100,25);
-        jp2.add(jlb1);
-        tt1 = new JTextField();
-        tt1.setBounds(120,20,340,25);
-        jp2.add(tt1);
+        popLabel = new JLabel("POP服务：");
+        popLabel.setBounds(40,20,100,25);
+        rcvPanel.add(popLabel);
+        popText = new JTextField();
+        popText.setBounds(120,20,340,25);
+        rcvPanel.add(popText);
         //默认值
-        tt1.setText("pop.qq.com");
+        popText.setText("pop.qq.com");
 
-        jlb2 = new JLabel("端口：");
-        jlb2.setBounds(40,60,100,25);
-        jp2.add(jlb2);
-        tt2 = new JTextField();
-        tt2.setBounds(120,60,340,25);
-        jp2.add(tt2);
+        portLabel = new JLabel("端口：");
+        portLabel.setBounds(40,60,100,25);
+        rcvPanel.add(portLabel);
+        portText = new JTextField();
+        portText.setBounds(120,60,340,25);
+        rcvPanel.add(portText);
         //默认为100
-        tt2.setText("100");
+        portText.setText("100");
 
-        jlb3 = new JLabel("收件人邮箱：");
-        jlb3.setBounds(40,100,100,25);
-        jp2.add(jlb3);
-        tt3 = new JTextField();
-        tt3.setBounds(120,100,340,25);
-        jp2.add(tt3);
+        rcvrLabel = new JLabel("收件人邮箱：");
+        rcvrLabel.setBounds(40,100,100,25);
+        rcvPanel.add(rcvrLabel);
+        rcvrText = new JTextField();
+        rcvrText.setBounds(120,100,340,25);
+        rcvPanel.add(rcvrText);
         //检查邮箱格式是否正确
         checkMail();
-        tt3.addFocusListener(new FocusListener() {
+        rcvrText.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
                 checkMail();
@@ -122,21 +122,21 @@ public class receiveUI extends JFrame implements ActionListener {
             }
         });
 
-        jlb4 = new JLabel("授权码：");
-        jlb4.setBounds(40,140,100,25);
-        jp2.add(jlb4);
-        jpf = new JPasswordField();
-        jpf.setBounds(120,140,340,25);
-        jp2.add(jpf);
+        pswdLabel = new JLabel("授权码：");
+        pswdLabel.setBounds(40,140,100,25);
+        rcvPanel.add(pswdLabel);
+        pswdText = new JPasswordField();
+        pswdText.setBounds(120,140,340,25);
+        rcvPanel.add(pswdText);
 
         // 邮件列表
-        jl = new JList(mailData);
-        this.jl.addMouseListener(new MouseAdapter() {
+        rcvMailList = new JList(mailData);
+        this.rcvMailList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 // 双击显示邮件
-//				if (e.getClickCount() == 2) {
-//					// 获取下标
-//					int num = jl.getSelectedIndex();
+				if (e.getClickCount() == 2) {
+					// 获取下标
+					int num = rcvMailList.getSelectedIndex();
 //					if (MailReciveController.message != null && MailReciveController.message.length > 0) {
 //						int length = MailReciveController.message.length;
 //						// 显示面板
@@ -147,41 +147,30 @@ public class receiveUI extends JFrame implements ActionListener {
 //							JOptionPane.showMessageDialog(null, "打开邮件失败！", "提示消息", JOptionPane.WARNING_MESSAGE);
 //						}
 //					}
-//
-//				}
+
+				}
             }
         });
 
-        jl.setSelectedIndex(0);
-        jsp = new JScrollPane(jl);
-        jsp.setBorder(new TitledBorder("Email 列表"));
-        jsp.setBounds(50,180,400,360);
-        jp2.add(jsp);
+        rcvMailList.setSelectedIndex(0);
+        mailPane = new JScrollPane(rcvMailList);
+        mailPane.setBorder(new TitledBorder("Email 列表"));
+        mailPane.setBounds(50,180,400,360);
+        rcvPanel.add(mailPane);
 
-        button1 = new JButton("接收");
-        button1.setBounds(100,570,70,25);
-        button1.addActionListener(this);
-        jp2.add(button1);
+        rcvButton = new JButton("接收");
+        rcvButton.setBounds(100,570,70,25);
+        rcvButton.addActionListener(this);
+        rcvPanel.add(rcvButton);
 
-//		button2 = new JButton("重置");
-//		button2.setBounds(155,630,70,25);
-//		button2.addActionListener(this);
-//		jp2.add(button2);
-//
-//		button3 = new JButton("中止");
-//		button3.setBounds(255,570,70,25);
-//		button3.addActionListener(this);
-//		button3.setEnabled(false);
-//		jp2.add(button3);
-
-        button4 = new JButton("关闭");
-        button4.setBounds(330,570,70,25);
-        button4.addActionListener(this);
-        jp2.add(button4);
+        closeButton = new JButton("关闭");
+        closeButton.setBounds(330,570,70,25);
+        closeButton.addActionListener(this);
+        rcvPanel.add(closeButton);
 
 
         this.add(jtp);
-        jtp.add("收邮件",jp2);
+        jtp.add("收邮件", rcvPanel);
         this.setTitle("邮箱");
         this.setSize(500, 700);
         this.setLocationRelativeTo(null);
@@ -195,16 +184,15 @@ public class receiveUI extends JFrame implements ActionListener {
 
     protected void checkMail() {
         // 收件人
-        sendUser = tt3.getText().trim();
+        sendUser = rcvrText.getText().trim();
         if (!"".equals(sendUser)) {
             String[] s = new String[1];
             s[0] = sendUser;
-            if (!mu.checkMailFormat(s)) {
+            if (MailUtil.checkMailFormat(s)) {
+                sendUserIsOk2 = true;
+            } else { //邮箱格式不正确
                 sendUserIsOk2 = false;
                 JOptionPane.showMessageDialog(null, "收件人邮箱格式不正确！请检查！", "提示消息", JOptionPane.WARNING_MESSAGE);
-                return;
-            } else {
-                sendUserIsOk2 = true;
             }
         }
 
@@ -214,7 +202,7 @@ public class receiveUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         Object key = e.getSource();
-        if(key.equals(button1)){
+        if(key.equals(rcvButton)){
             //接收
         }
     }
