@@ -20,10 +20,15 @@ public class SendController {
      */
     public String sendMail(MailServer mailServer, MailBody mailBody){
         try {
-            //声明服务类
-            SendService sendService = new SendService();
-            //发送邮件
-            return sendService.send(mailServer,mailBody);
+            /*使用java mail框架*/
+//            //声明服务类
+//            SendService sendService = new SendService();
+//            //发送邮件
+//            return sendService.send(mailServer,mailBody);
+
+            /*从零开始smtp*/
+            SendService2 sendService2 = new SendService2();
+            return sendService2.sendMail(mailServer, mailBody);
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();

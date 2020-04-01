@@ -28,4 +28,16 @@ public class smtpTest {
         controller.sendMail(server,mailBody);
     }
 
+    //测试能否发送邮件
+    //因为隐私问题，邮箱授权码就用---代替
+    @Test
+    public void testSend2(){
+        SendController controller = new SendController();
+        MailServer server = new MailServer("smtp.qq.com","25");
+        List<String> recs = new ArrayList<>();
+        recs.add("827041735@qq.com");
+        MailBody mailBody = new MailBody("827041735@qq.com","---",recs,"hello",null,"hello xsy",null);
+        System.out.println(controller.sendMail(server,mailBody));
+    }
+
 }
