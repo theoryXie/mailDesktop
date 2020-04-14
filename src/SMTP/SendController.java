@@ -1,5 +1,4 @@
 package SMTP;
-
 import Util.MailUtil;
 
 /**

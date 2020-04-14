@@ -10,7 +10,6 @@ import java.util.List;
  * @date       : 2020/2/29
  */
 
-
 public class MailBody {
     // 发件人
     private String sendUser;

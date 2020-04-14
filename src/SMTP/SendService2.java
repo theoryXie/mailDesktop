@@ -61,7 +61,7 @@ public class SendService2 {
             return "建立连接失败！" + result;
         }
 
-                /* =====================发送打招呼指令 EHLO hello==========================*/
+        /* =====================发送打招呼指令 EHLO hello==========================*/
         result = sendCommand("EHLO "+mailServer.getSmtpUrl()+newLine);
         //检测返回的消息是否以250开头
         if(!result.startsWith("250")){
@@ -87,7 +87,6 @@ public class SendService2 {
         if(!result.startsWith("235")){
             return "密码错误！" + result;
         }
-
 
         /*=============================发送邮件===================================*/
         // Mail From:<...>
