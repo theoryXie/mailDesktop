@@ -3,7 +3,7 @@ package POP;
 public class ReceiveController {
 	/**
 	 * 
-	 * @Description:	与前端交互的接口类
+	 * @Description: 与前端交互的接口类
 	 * @param @param popmailServer
 	 * @param @param mailBody2
 	 * @param @return

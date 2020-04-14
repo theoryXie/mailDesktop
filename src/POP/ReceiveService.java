@@ -86,17 +86,32 @@ public class ReceiveService {
 		   
 		   /*=====================查看特定邮件内容===========================================*/
 		   num = clientInput.nextInt();
-		   String ans = sendCommand("RETR"+num);
-		   getContent();
+		   String ans = sendCommand("RETR"+num+newLine);
+		   if(ans.startsWith("+OK")) {
+			   String content = getContent();
+			   return ans + newLine + content;
+		   }
 		   /*=====================删除一个邮件===========================================*/
-			   
-		
+		   num = clientInput.nextInt();
+		   result = sendCommand("DELE"+num);
+		   if(!ans.startsWith("+OK")) {
+			   return "DELE指令错误"+result;
+		   
+		   }
+		   		
 		    dos.close();
 	        bf.close();
 	        client.close();
 	        return "接收成功！";
 		
 	}
+	/**
+	 * 
+	 * @Description:完整读取信件内容
+	 * @param @return
+	 * @return String
+	 * @return 详细信件内容
+	 */
 	private String getContent() {
 		String content = socketReader.nextLine();
 		String temp = socketReader.nextLine();

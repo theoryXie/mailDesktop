@@ -7,7 +7,7 @@ package POP;
  */
 
 public class MailBody2 {
-	//发件人
+	//信发件人
 	public String sendUser;
 	//密码
 	public String sendUserPwd;

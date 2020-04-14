@@ -2,7 +2,7 @@ package POP;
 /**
  * 
  * @author guoyuhang
- * @Description: 邮件系统服务器参数类
+ * @Description: 邮件服务器参数类
  */
 public class PopMailServer {
 	    private String popUrl;
