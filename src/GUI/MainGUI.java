@@ -278,27 +278,36 @@ public class MainGUI extends JFrame implements ActionListener {
         String port = portText.getText();
         String sender = senderText.getText();
         String pwd = new String(passwordText.getPassword());
-
+        //发送给多个地址 用;分隔开
         String receiver = receiverText.getText();
         List<String> recs = new ArrayList<>();
-        recs.add(receiver);
-        //TODO 暂时只发送给一个地址
+        String[] s = receiver.split(";");
+        String[] addresses = new String[s.length+1];
+        for(int i = 0;i < s.length;i++){
+            recs.add(s[i]);
+            addresses[i] = s[i];
+        }
+        addresses[s.length] = sender;
+
         String subject = titleText.getText();
         String mainText = textArea.getText();
-        String[] addresses = {sender,receiver};
 
-        if(MailUtil.checkMailFormat(addresses))
-        {
-            MailBody mailBody = new MailBody(sender,pwd,recs,subject,filesAddress,mainText,null);
-            MailServer mailServer = new MailServer(smtpUrl,port);
-            SendController sendController = new SendController();
-            String res = sendController.sendMail(mailServer,mailBody);
-            JOptionPane.showMessageDialog(null, res, "提示", JOptionPane.INFORMATION_MESSAGE);
-
+        if(smtpUrl.isEmpty() || port.isEmpty() || sender.isEmpty() || pwd.isEmpty() || receiver.isEmpty() || subject.isEmpty()||mainText.isEmpty()){
+            //提示错误
+            JOptionPane.showMessageDialog(null, "信息填写不完整", "提示", JOptionPane.WARNING_MESSAGE);
         }
         else {
-            //提示地址错误
-            JOptionPane.showMessageDialog(null, "邮箱地址格式出错", "错误", JOptionPane.ERROR_MESSAGE);
+            if (MailUtil.checkMailFormat(addresses)) {
+                MailBody mailBody = new MailBody(sender, pwd, recs, subject, filesAddress, mainText, null);
+                MailServer mailServer = new MailServer(smtpUrl, port);
+                SendController sendController = new SendController();
+                String res = sendController.sendMail(mailServer, mailBody);
+                JOptionPane.showMessageDialog(null, res, "提示", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                //提示地址错误
+                JOptionPane.showMessageDialog(null, "邮箱地址格式出错", "错误", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
     }
