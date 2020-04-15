@@ -124,7 +124,7 @@ public class MainGUI extends JFrame implements ActionListener {
         serviceLabel.setBounds(x1,y1,width1,height1);
         sendPanel.add(serviceLabel);
 
-        serviceText = new JTextField();
+        serviceText = new JTextField("smtp.qq.com");
         serviceText.setBounds(x2,y2,width2,height2);
         sendPanel.add(serviceText);
 
@@ -133,7 +133,7 @@ public class MainGUI extends JFrame implements ActionListener {
         portLabel.setBounds(x1,y1,width1,height1);
         sendPanel.add(portLabel);
 
-        portText = new JTextField();
+        portText = new JTextField("25");
         y2 = y2 + 40;
         portText.setBounds(x2,y2,width2,height2);
         sendPanel.add(portText);
@@ -143,7 +143,7 @@ public class MainGUI extends JFrame implements ActionListener {
         senderLabel.setBounds(x1,y1,width1,height1);
         sendPanel.add(senderLabel);
 
-        senderText = new JTextField();
+        senderText = new JTextField("827041735@qq.com");
         y2 = y2 + 40;
         senderText.setBounds(x2,y2,width2,height2);
         sendPanel.add(senderText);
@@ -163,7 +163,7 @@ public class MainGUI extends JFrame implements ActionListener {
         receiverLabel.setBounds(x1,y1,width1,height1);
         sendPanel.add(receiverLabel);
 
-        receiverText = new JTextField();
+        receiverText = new JTextField("827041735@qq.com");
         y2 = y2 + 40;
         receiverText.setBounds(x2,y2,width2,height2);
         sendPanel.add(receiverText);
