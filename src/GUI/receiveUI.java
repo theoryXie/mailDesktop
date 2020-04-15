@@ -6,6 +6,10 @@ import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
+
+import POP.MailBody2;
+import POP.PopMailServer;
+import POP.ReceiveController;
 import Util.MailUtil;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
@@ -100,12 +104,12 @@ public class receiveUI extends JFrame implements ActionListener {
         portText.setBounds(120,60,340,25);
         rcvPanel.add(portText);
         //默认为100
-        portText.setText("100");
+        portText.setText("110");
 
         rcvrLabel = new JLabel("收件人邮箱：");
         rcvrLabel.setBounds(40,100,100,25);
         rcvPanel.add(rcvrLabel);
-        rcvrText = new JTextField();
+        rcvrText = new JTextField("1244535094@qq.com");
         rcvrText.setBounds(120,100,340,25);
         rcvPanel.add(rcvrText);
         //检查邮箱格式是否正确
@@ -160,12 +164,35 @@ public class receiveUI extends JFrame implements ActionListener {
 
         rcvButton = new JButton("接收");
         rcvButton.setBounds(100,570,70,25);
-        rcvButton.addActionListener(this);
+        //点击接收按钮
+        rcvButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //开启一个线程，避免阻塞整个界面
+                Thread t1= new Thread() {
+                    public void run() {
+                        System.out.print("点击成功");
+                        ReceiveMail();
+                    }
+                };
+                t1.start();
+            }
+        });
         rcvPanel.add(rcvButton);
 
         closeButton = new JButton("关闭");
         closeButton.setBounds(330,570,70,25);
-        closeButton.addActionListener(this);
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+//                    System.exit(0);
+                    new OpenMail();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         rcvPanel.add(closeButton);
 
 
@@ -179,6 +206,29 @@ public class receiveUI extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon i = new ImageIcon(getClass().getResource("mail3.png"));
         this.setIconImage(i.getImage());
+
+    }
+
+    private void ReceiveMail(){
+        String popUrl = popText.getText();
+        String port = portText.getText();
+        String receiver = rcvrText.getText();
+        String psw = new String(pswdText.getPassword());
+
+        //验证参数不为空
+        if(!("".equals(popUrl) || "".equals(port) || "".equals(psw))) {
+            MailBody2 mailBody2 = new MailBody2();
+            mailBody2.setReceiveUser(receiver);
+            mailBody2.setReceiveUserPwd(psw);
+            PopMailServer popMailServer = new PopMailServer(popUrl,port);
+            ReceiveController receiveController = new ReceiveController();
+            String response = receiveController.receiveMail(popMailServer,mailBody2);
+            System.out.print("response");
+            System.out.print(response);
+        }else{
+            //弹框报错
+            JOptionPane.showMessageDialog(null,"请将信息填写完整","错误",JOptionPane.ERROR_MESSAGE);
+        }
 
     }
 
@@ -201,10 +251,10 @@ public class receiveUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        Object key = e.getSource();
-        if(key.equals(rcvButton)){
-            //接收
-        }
+//        Object key = e.getSource();
+//        if(key.equals(rcvButton)){
+//            //接收
+//        }
     }
 
 
