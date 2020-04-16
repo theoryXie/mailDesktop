@@ -28,7 +28,7 @@ public class smtpTest {
         recs.add("whuxcsy@163.com");
         files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\main.jsp");
         files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\index.jsp");
-        MailBody mailBody = new MailBody("2017302580167@whu.edu.cn","xsy171401",recs,"你好",files,"你好谢帅宇",null);
+        MailBody mailBody = new MailBody("2017302580167@whu.edu.cn","---",recs,"你好",files,"你好谢帅宇",null);
         System.out.println(controller.sendMail(server,mailBody));
     }
 
@@ -43,7 +43,7 @@ public class smtpTest {
         recs.add("827041735@qq.com");
         files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\main.jsp");
         files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\index.jsp");
-        MailBody mailBody = new MailBody("827041735@qq.com","izaalzwhtryvbdbb",recs,"你好",files,"你好谢帅宇",null);
+        MailBody mailBody = new MailBody("827041735@qq.com","---",recs,"你好",files,"你好谢帅宇",null);
         System.out.println(controller.sendMail(server,mailBody));
     }
 
