@@ -7,9 +7,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
 
-import POP.MailBody2;
 import POP.PopMailServer;
+import POP.PopResult;
 import POP.ReceiveController;
+import SMTP.MailBody;
 import Util.MailUtil;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
@@ -217,12 +218,12 @@ public class receiveUI extends JFrame implements ActionListener {
 
         //验证参数不为空
         if(!("".equals(popUrl) || "".equals(port) || "".equals(psw))) {
-            MailBody2 mailBody2 = new MailBody2();
-            mailBody2.setReceiveUser(receiver);
-            mailBody2.setReceiveUserPwd(psw);
+            MailBody mailBody2 = new MailBody();
+            mailBody2.setSendUser(receiver);
+            mailBody2.setSendUserPwd(psw);
             PopMailServer popMailServer = new PopMailServer(popUrl,port);
             ReceiveController receiveController = new ReceiveController();
-            String response = receiveController.receiveMail(popMailServer,mailBody2);
+            PopResult response = receiveController.receiveMail(popMailServer,mailBody2);
             System.out.print("response");
             System.out.print(response);
         }else{

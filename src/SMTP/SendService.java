@@ -86,7 +86,7 @@ public class SendService {
         prop.setProperty("mail.smtp.auth","true");
         //用户名和密码
         prop.setProperty("username", mailBody.getSendUser());
-        prop.setProperty("password", mailBody.getSendUserPwd());
+        prop.setProperty("password", mailBody.getPwd());
         //使用SSL，企业邮箱必需！
         //开启安全协议
 //        MailSSLSocketFactory sf = null;
@@ -107,7 +107,7 @@ public class SendService {
         //3.通过session得到transport对象
         Transport tp = session.getTransport();
         //4.使用用户名和密码连接服务器
-        tp.connect(mailBody.getSendUser(),mailBody.getSendUserPwd());
+        tp.connect(mailBody.getSendUser(),mailBody.getPwd());
         //5.创建邮件
         Message message = createMail(session,mailBody);
         //6.给transport添加监听，以便知道发送结果

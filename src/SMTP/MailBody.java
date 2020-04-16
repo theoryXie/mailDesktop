@@ -14,7 +14,7 @@ public class MailBody {
     // 发件人
     private String sendUser;
     // 密码(授权码)
-    private String sendUserPwd;
+    private String Pwd;
     // 收件人
     private List<String> recUsers;
     // 主题
@@ -31,7 +31,7 @@ public class MailBody {
 
     public MailBody(String sendUser, String sendUserPwd, List<String> recUsers, String mailSubject, List<String> filesAddr, String mainText, Date sendDate) {
         this.sendUser = sendUser;
-        this.sendUserPwd = sendUserPwd;
+        this.Pwd = sendUserPwd;
         this.recUsers = recUsers;
         this.mailSubject = mailSubject;
         this.filesAddr = filesAddr;
@@ -47,12 +47,12 @@ public class MailBody {
         this.sendUser = sendUser;
     }
 
-    public String getSendUserPwd() {
-        return sendUserPwd;
+    public String getPwd() {
+        return Pwd;
     }
 
     public void setSendUserPwd(String sendUserPwd) {
-        this.sendUserPwd = sendUserPwd;
+        this.Pwd = sendUserPwd;
     }
 
     public List<String> getRecUsers() {

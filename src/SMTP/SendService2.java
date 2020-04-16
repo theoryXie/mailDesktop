@@ -81,7 +81,7 @@ public class SendService2 {
         if (!result.startsWith("334")) {
             return "用户名邮箱错误！" + result;
         }
-        result = sendCommand(Base64.encode(mailBody.getSendUserPwd().getBytes()) + newLine);
+        result = sendCommand(Base64.encode(mailBody.getPwd().getBytes()) + newLine);
         if (!result.startsWith("235")) {
             return "密码错误！" + result;
         }
