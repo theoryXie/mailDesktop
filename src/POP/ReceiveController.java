@@ -1,5 +1,7 @@
 package POP;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 import SMTP.MailBody;
 
 public class ReceiveController {
@@ -14,14 +16,18 @@ public class ReceiveController {
 	 * @param mailBody2
 	 * @return
 	 */
-	 public PopResult receiveMail(PopMailServer popmailServer, MailBody mailBody2){
+
+	//添加对收信的解码	
+	 public String receiveMail(PopMailServer popmailServer, MailBody mailBody2){
 	        try {
 	            /*从零开始pop3*/
 	            ReceiveService receiveService = new ReceiveService();
-	            return receiveService.receiveMail(popmailServer, mailBody2);
+	            String result = receiveService.receiveMail(popmailServer, mailBody2).toString();
+	            return Base64.decode(result).toString(); 
+      
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;
 	        }
-	    }
+	 }
 }
