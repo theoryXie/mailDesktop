@@ -39,7 +39,7 @@ public class popTest {
         PopMailServer ps = new PopMailServer("pop.qq.com","110");
         MailBody mb2 = new MailBody();
         mb2.setSendUser("827041735@qq.com");
-        mb2.setSendUserPwd("izaalzwhtryvbdbb");
+        mb2.setSendUserPwd("xsy");
         PopResult result = rec.receiveMail(ps,mb2);
         for(PopMail popMail:result.getMails()){
             System.out.println(popMail);
