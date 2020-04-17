@@ -4,10 +4,14 @@ import POP.PopMail;
 import SMTP.DeliveredState;
 import SMTP.MailBody;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import sun.misc.BASE64Decoder;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,15 +47,16 @@ public class MailUtil {
         return true;
     }
 
-    public static PopMail decodePop(String mailString){
+    public static PopMail decodePop(String mailString) throws IOException {
         String fromPattern = "\\(CST\\)From: (.*)To";
         String toPattern = "To: (.*)MIME-Version";
         String subjectPattern = "Subject: =\\?utf-8\\?b\\?(.*)\\?=";
         String textPattern = "Content-Transfer-Encoding: base64(.*)--a";
         String from =  regixPattern(fromPattern, mailString);
         String to = regixPattern(toPattern, mailString);
-        String subject = Base64.decode(regixPattern(subjectPattern, mailString)).toString();
-        String text = Base64.decode(regixPattern(textPattern, mailString)).toString();
+        final BASE64Decoder decoder = new BASE64Decoder();
+        String subject = new String(decoder.decodeBuffer(regixPattern(subjectPattern, mailString)), StandardCharsets.UTF_8);
+        String text = new String(decoder.decodeBuffer(regixPattern(textPattern, mailString)), StandardCharsets.UTF_8);
         return new PopMail(from,to,subject,text);
     }
 

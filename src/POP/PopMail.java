@@ -48,4 +48,15 @@ public class PopMail {
     public void setText(String text) {
         this.text = text;
     }
+
+
+    @Override
+    public String toString() {
+        return "PopMail{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", subject='" + subject + '\'' +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }
