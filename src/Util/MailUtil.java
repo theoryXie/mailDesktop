@@ -1,11 +1,15 @@
 package Util;
 
+import POP.PopMail;
 import SMTP.DeliveredState;
+import SMTP.MailBody;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -39,6 +43,27 @@ public class MailUtil {
         return true;
     }
 
+    public static PopMail decodePop(String mailString){
+        String fromPattern = "\\(CST\\)From: (.*)To";
+        String toPattern = "To: (.*)MIME-Version";
+        String subjectPattern = "Subject: =\\?utf-8\\?b\\?(.*)\\?=";
+        String textPattern = "Content-Transfer-Encoding: base64(.*)--a";
+        String from =  regixPattern(fromPattern, mailString);
+        String to = regixPattern(toPattern, mailString);
+        String subject = Base64.decode(regixPattern(subjectPattern, mailString)).toString();
+        String text = Base64.decode(regixPattern(textPattern, mailString)).toString();
+        return new PopMail(from,to,subject,text);
+    }
+
+    private static String regixPattern(String pattern, String res) {
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(res);
+        if (m.find()){
+            return m.group(1);
+        }
+        else
+            return "NO MATCH";
+    }
 
 
 

@@ -12,7 +12,7 @@ import java.util.List;
  * @date       : 2020/4/16
  */
 public class PopResult {
-    private List<MailBody> mails;//接收到的所有邮件
+    private List<PopMail> mails;//接收到的所有邮件
     private List<String> mailString;//接收到的所有邮件的字符串格式
     private int allNum;//邮件数量
     private int allSize;//所有邮件大小
@@ -29,11 +29,11 @@ public class PopResult {
         this.message = message;
     }
 
-    public List<MailBody> getMails() {
+    public List<PopMail> getMails() {
         return mails;
     }
 
-    public void setMails(List<MailBody> mails) {
+    public void setMails(List<PopMail> mails) {
         this.mails = mails;
     }
 

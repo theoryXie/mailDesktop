@@ -208,7 +208,6 @@ public class MainGUI extends JFrame implements ActionListener {
 //        sendPanel.add(progressBar);
 
 
-
         textLabel = new JLabel("正文");
         y1 = y1 + 50;
         textLabel.setBounds(x1,y1,width1,height1);
@@ -257,9 +256,7 @@ public class MainGUI extends JFrame implements ActionListener {
         this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
     }
-
 
     // font
     private static void InitGlobalFont(Font font) {
