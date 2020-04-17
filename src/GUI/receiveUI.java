@@ -16,7 +16,7 @@ import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 
 public class receiveUI extends JFrame implements ActionListener {
 
-    public JTabbedPane jtp = new JTabbedPane(JTabbedPane.TOP);
+   // public JTabbedPane jtp = new JTabbedPane(JTabbedPane.TOP);
     public JPanel rcvPanel;
     //接收邮件列表
     public JList rcvMailList;
@@ -36,49 +36,7 @@ public class receiveUI extends JFrame implements ActionListener {
     public String sendUser;
     public Boolean sendUserIsOk2 = true;
 
-    public static void main (String[] args){
-        EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                //初始化主题
-                //设置字体
-                InitGlobalFont(new Font("微软雅黑", Font.PLAIN, 13));
 
-                //设置边框样式
-                //普通不透明
-                BeautyEyeLNFHelper.frameBorderStyle = BeautyEyeLNFHelper.FrameBorderStyle.generalNoTranslucencyShadow;
-                //设置主题
-                try {
-                    org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                //隐藏设置按钮
-                UIManager.put("RootPane.setupButtonVisible", false);
-                // 开启/关闭窗口在不活动时的半透明效果
-                // 设置此开关量为false即表示关闭之，BeautyEye LNF中默认是true
-                BeautyEyeLNFHelper.translucencyAtFrameInactive = false;
-                // 设置BeantuEye外观下JTabbedPane的左缩进
-                // 改变InsetsUIResource参数的值即可实现
-                UIManager.put("TabbedPane.tabAreaInsets", new javax.swing.plaf.InsetsUIResource(3, 20, 2, 20));
-                // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-                new receiveUI();
-            }
-        } );
-    }
-
-    //字体设置
-    public static void InitGlobalFont(Font font){
-        FontUIResource fontRes = new FontUIResource(font);
-        for (Enumeration<Object> keys = UIManager.getDefaults().keys(); keys.hasMoreElements();) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof FontUIResource) {
-                UIManager.put(key, fontRes);
-            }
-        }
-    }
 
     //构造函数
     public receiveUI(){
@@ -197,8 +155,9 @@ public class receiveUI extends JFrame implements ActionListener {
         rcvPanel.add(closeButton);
 
 
-        this.add(jtp);
-        jtp.add("收邮件", rcvPanel);
+//        this.add(jtp);
+//        jtp.add("收邮件", rcvPanel);
+        this.add(rcvPanel);
         this.setTitle("邮箱");
         this.setSize(500, 700);
         this.setLocationRelativeTo(null);

@@ -58,8 +58,8 @@ public class MainGUI extends JFrame implements ActionListener {
     public JScrollPane scrollPane;
     //发送按钮
     public JButton sendButton;
-    //存草稿
-    public JButton saveButton;
+    //跳转到收邮件
+    public JButton recButton;
 
 
 
@@ -241,9 +241,10 @@ public class MainGUI extends JFrame implements ActionListener {
             }
         });
 
-        saveButton = new JButton("存草稿");
-        saveButton.setBounds(x1+120,y1,width1,height1);
-        sendPanel.add(saveButton);
+        recButton = new JButton("收邮件");
+        recButton.setBounds(x1+120,y1,width1,height1);
+        sendPanel.add(recButton);
+        recButton.addActionListener(this);
 
 
         this.add(sendPanel);
@@ -342,6 +343,10 @@ public class MainGUI extends JFrame implements ActionListener {
                 filesAddress.clear();
                 fileLable.setText("");
                 deleteFile.setEnabled(false);
+            }
+            //收邮件
+            if(key.equals(recButton)){
+                new receiveUI();
             }
 
     }
