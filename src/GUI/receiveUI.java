@@ -108,7 +108,7 @@ public class receiveUI extends JFrame implements ActionListener {
 					if(!mailData.isEmpty()){
 					    int length = popResult.getAllNum();
 					    try {
-					        OpenMail openMail = new OpenMail();
+					        OpenMail openMail = new OpenMail(popResult.getMails().get(length - 1 - num));
                         } catch (Exception ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, "打开邮件失败！", "提示消息", JOptionPane.WARNING_MESSAGE);
@@ -159,8 +159,8 @@ public class receiveUI extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-//                    System.exit(0);
-                    new OpenMail();
+                    System.exit(0);
+//                    new OpenMail();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
