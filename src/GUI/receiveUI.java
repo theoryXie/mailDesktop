@@ -6,13 +6,15 @@ import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
+import java.util.List;
 
+import POP.PopMail;
 import POP.PopMailServer;
 import POP.PopResult;
 import POP.ReceiveController;
 import SMTP.MailBody;
 import Util.MailUtil;
-import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
+import com.sun.org.apache.bcel.internal.generic.POP;
 
 public class receiveUI extends JFrame implements ActionListener {
 
@@ -35,6 +37,9 @@ public class receiveUI extends JFrame implements ActionListener {
     //收件人
     public String sendUser;
     public Boolean sendUserIsOk2 = true;
+
+    //接受返回的结果
+    PopResult popResult;
 
 
 
@@ -100,6 +105,15 @@ public class receiveUI extends JFrame implements ActionListener {
 				if (e.getClickCount() == 2) {
 					// 获取下标
 					int num = rcvMailList.getSelectedIndex();
+					if(!mailData.isEmpty()){
+					    int length = popResult.getAllNum();
+					    try {
+					        OpenMail openMail = new OpenMail();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "打开邮件失败！", "提示消息", JOptionPane.WARNING_MESSAGE);
+                        }
+                    };
 //					if (MailReciveController.message != null && MailReciveController.message.length > 0) {
 //						int length = MailReciveController.message.length;
 //						// 显示面板
@@ -182,9 +196,16 @@ public class receiveUI extends JFrame implements ActionListener {
             mailBody2.setSendUserPwd(psw);
             PopMailServer popMailServer = new PopMailServer(popUrl,port);
             ReceiveController receiveController = new ReceiveController();
-            PopResult response = receiveController.receiveMail(popMailServer,mailBody2);
-            System.out.print("response");
-            System.out.print(response);
+            popResult = receiveController.receiveMail(popMailServer,mailBody2);
+            JOptionPane.showMessageDialog(null,popResult.getMessage(),"提示",JOptionPane.INFORMATION_MESSAGE);
+            //如果接受邮件成功
+            if("读取成功！".equals(popResult.getMessage())){
+                List<PopMail> popMails = popResult.getMails();
+                for(int i = popResult.getAllNum();i>0;i--){
+                    PopMail popMail = popMails.get(i - 1);
+                    mailData.addElement(popMail.getSubject());
+                }
+            }
         }else{
             //弹框报错
             JOptionPane.showMessageDialog(null,"请将信息填写完整","错误",JOptionPane.ERROR_MESSAGE);

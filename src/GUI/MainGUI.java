@@ -252,7 +252,7 @@ public class MainGUI extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setResizable(false);
-        ImageIcon icon = new ImageIcon(getClass().getResource("mail.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("mail3.png"));
         this.setIconImage(icon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
