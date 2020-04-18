@@ -85,6 +85,7 @@ public class OpenMail extends JFrame implements ActionListener {
         jp1.add(datePane);
 
         mailBody = new JEditorPane();
+        mailBody.setEditable(false);
         mailBody.setText(popMail.getText());
         jp2.add(mailBody,BorderLayout.CENTER);
 
