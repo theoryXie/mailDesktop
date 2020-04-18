@@ -94,10 +94,11 @@ public class OpenMail extends JFrame implements ActionListener {
         this.setSize(750,700);
         this.setVisible(true);
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         ImageIcon i = new ImageIcon(getClass().getResource("mail3.png"));
         this.setIconImage(i.getImage());
+        //只关闭当前窗体
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
     }
