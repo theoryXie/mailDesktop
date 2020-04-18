@@ -27,8 +27,8 @@ public class OpenMail extends JFrame implements ActionListener {
     //构造方法
     public OpenMail(PopMail popMail) throws Exception{
 //        this.message = message;
-        init();
         this.popMail = popMail;
+        init();
     }
 
     public void init() throws Exception{
