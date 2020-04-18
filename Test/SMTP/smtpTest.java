@@ -25,10 +25,9 @@ public class smtpTest {
         List<String> recs = new ArrayList<>();
         //List<String> files = new ArrayList<>();
         recs.add("827041735@qq.com");
-        recs.add("whuxcsy@163.com");
         //files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\main.jsp");
         //files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\index.jsp");
-        MailBody mailBody = new MailBody("2017302580167@whu.edu.cn","---",recs,"你好",null,"你好谢帅宇",null);
+        MailBody mailBody = new MailBody("2017302580167@whu.edu.cn","xsy171401",recs,"你好，谢帅宇，不知道你最近怎么样了",null,"你好谢帅宇，我们找了很多首歌，想请你评价一下",null);
         System.out.println(controller.sendMail(server,mailBody));
     }
 

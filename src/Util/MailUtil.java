@@ -48,15 +48,15 @@ public class MailUtil {
     }
 
     public static PopMail decodePop(String mailString) throws IOException {
-        String fromPattern = "\\(CST\\)From: (.*)To";
+        String fromPattern = "From: (.*)To";
         String toPattern = "To: (.*)MIME-Version";
         String subjectPattern = "Subject: =\\?utf-8\\?b\\?(.*)\\?=";
-        String textPattern = "Content-Transfer-Encoding: base64(.*)--a";
+        String textPattern = "Content-Transfer-Encoding: base64(.*)(--a)*";
         String from =  regixPattern(fromPattern, mailString);
         String to = regixPattern(toPattern, mailString);
         final BASE64Decoder decoder = new BASE64Decoder();
         String subject = new String(decoder.decodeBuffer(regixPattern(subjectPattern, mailString)), StandardCharsets.UTF_8);
-        String text = new String(decoder.decodeBuffer(regixPattern(textPattern, mailString)), StandardCharsets.UTF_8);
+        String text = new String(decoder.decodeBuffer(regixPattern(textPattern, mailString).replace("--a","")), StandardCharsets.UTF_8);
         return new PopMail(from,to,subject,text);
     }
 
