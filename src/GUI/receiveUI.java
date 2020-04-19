@@ -2,10 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.FontUIResource;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.Enumeration;
 import java.util.List;
 
 import POP.PopMail;
@@ -14,7 +11,6 @@ import POP.PopResult;
 import POP.ReceiveController;
 import SMTP.MailBody;
 import Util.MailUtil;
-import com.sun.org.apache.bcel.internal.generic.POP;
 
 public class receiveUI extends JFrame implements ActionListener {
 
@@ -30,7 +26,7 @@ public class receiveUI extends JFrame implements ActionListener {
     public JTextField popText, portText, rcvrText;
     public JPasswordField pswdText;
     //接收、关闭按钮
-    public JButton rcvButton, closeButton;
+    public JButton rcvButton, deleteButton;
 
     public static DefaultListModel mailData = new DefaultListModel();
 
@@ -40,6 +36,9 @@ public class receiveUI extends JFrame implements ActionListener {
 
     //接受返回的结果
     PopResult popResult;
+
+    JProgressBar jpbar3 = new JProgressBar();
+    ReceiveController receiveController = new ReceiveController();
 
 
 
@@ -113,18 +112,7 @@ public class receiveUI extends JFrame implements ActionListener {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(null, "打开邮件失败！", "提示消息", JOptionPane.WARNING_MESSAGE);
                         }
-                    };
-//					if (MailReciveController.message != null && MailReciveController.message.length > 0) {
-//						int length = MailReciveController.message.length;
-//						// 显示面板
-//						try {
-//							ShowMail sm = new ShowMail(MailReciveController.message[length - 1 - num]);
-//						} catch (Exception e1) {
-//							e1.printStackTrace();
-//							JOptionPane.showMessageDialog(null, "打开邮件失败！", "提示消息", JOptionPane.WARNING_MESSAGE);
-//						}
-//					}
-
+                    }
 				}
             }
         });
@@ -135,8 +123,16 @@ public class receiveUI extends JFrame implements ActionListener {
         mailPane.setBounds(50,180,400,360);
         rcvPanel.add(mailPane);
 
+        //进度条
+        jpbar3.setStringPainted(true);
+        jpbar3.setBounds(50, 550, 350, 20);
+        jpbar3.setMinimum(1);
+        jpbar3.setMaximum(100);
+        jpbar3.setVisible(false);
+        rcvPanel.add(jpbar3);
+
         rcvButton = new JButton("接收");
-        rcvButton.setBounds(100,570,70,25);
+        rcvButton.setBounds(100,600,70,25);
         //点击接收按钮
         rcvButton.addActionListener(new ActionListener() {
             @Override
@@ -144,8 +140,12 @@ public class receiveUI extends JFrame implements ActionListener {
                 //开启一个线程，避免阻塞整个界面
                 Thread t1= new Thread() {
                     public void run() {
-//                        System.out.print("点击成功");
                         ReceiveMail();
+//                        mailData.addElement("chenyuru");
+//                        mailData.addElement("cyr");
+                        if(!mailData.isEmpty()){
+                            deleteButton.setEnabled(true);
+                        }
                     }
                 };
                 t1.start();
@@ -153,20 +153,26 @@ public class receiveUI extends JFrame implements ActionListener {
         });
         rcvPanel.add(rcvButton);
 
-        closeButton = new JButton("关闭");
-        closeButton.setBounds(330,570,70,25);
-        closeButton.addActionListener(new ActionListener() {
+        deleteButton = new JButton("删除邮件");
+        deleteButton.setEnabled(false);
+        deleteButton.setBounds(330,600,80,25);
+        deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    System.exit(0);
-//                    new OpenMail();
+                    if(!rcvMailList.isSelectionEmpty()){
+                        //删除邮件
+//                        mailData.removeElementAt(rcvMailList.getSelectedIndex());
+                        receiveController.deleteMail(rcvMailList.getSelectedIndex());
+                        JOptionPane.showMessageDialog(null,"删除成功","提示消息",JOptionPane.INFORMATION_MESSAGE);
+                        ReceiveMail();
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
-        rcvPanel.add(closeButton);
+        rcvPanel.add(deleteButton);
 
 
 //        this.add(jtp);
@@ -193,11 +199,13 @@ public class receiveUI extends JFrame implements ActionListener {
 
         //验证参数不为空
         if(!("".equals(popUrl) || "".equals(port) || "".equals(psw))) {
+            jpbar3.setVisible(true);
+            jpbar3.setValue(0);
+            jpbar3.setString("正在接收邮件，请耐心等待...");
             MailBody mailBody2 = new MailBody();
             mailBody2.setSendUser(receiver);
             mailBody2.setSendUserPwd(psw);
             PopMailServer popMailServer = new PopMailServer(popUrl,port);
-            ReceiveController receiveController = new ReceiveController();
             popResult = receiveController.receiveMail(popMailServer,mailBody2);
             JOptionPane.showMessageDialog(null,popResult.getMessage(),"提示",JOptionPane.INFORMATION_MESSAGE);
             //如果接受邮件成功
@@ -206,7 +214,10 @@ public class receiveUI extends JFrame implements ActionListener {
                 for(int i = popResult.getAllNum();i>0;i--){
                     PopMail popMail = popMails.get(i - 1);
                     mailData.addElement(popMail.getSubject());
+                    jpbar3.setString("接收成功");
                 }
+            }else{
+                jpbar3.setString(popResult.getMessage());
             }
         }else{
             //弹框报错
