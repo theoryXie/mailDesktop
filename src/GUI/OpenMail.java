@@ -1,7 +1,6 @@
 package GUI;
 import POP.PopMail;
 import POP.PopResult;
-import sun.plugin2.message.Message;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,13 +19,11 @@ public class OpenMail extends JFrame implements ActionListener {
     public JLabel titleLabel, senderLabel, receiverLabel, appendixLabel,dateLabel;
     //邮件主体
     public JEditorPane mailBody;
-    public Message message;
 
     public PopMail popMail;
 
     //构造方法
     public OpenMail(PopMail popMail) throws Exception{
-//        this.message = message;
         this.popMail = popMail;
         init();
     }

@@ -23,11 +23,11 @@ public class smtpTest {
         SendController controller = new SendController();
         MailServer server = new MailServer("whu.edu.cn","25");
         List<String> recs = new ArrayList<>();
-        //List<String> files = new ArrayList<>();
+        List<String> files = new ArrayList<>();
         recs.add("827041735@qq.com");
-        //files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\main.jsp");
-        //files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\index.jsp");
-        MailBody mailBody = new MailBody("2017302580167@whu.edu.cn","xsy171401",recs,"你好，谢帅宇，不知道你最近怎么样了",null,"你好谢帅宇，我们找了很多首歌，想请你评价一下",null);
+        files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\main.jsp");
+        files.add("D:\\package\\apache-tomcat-8.5.47\\webapps\\ROOT\\jsp\\index.jsp");
+        MailBody mailBody = new MailBody("2017302580167@whu.edu.cn","xsy171401",recs,"你好，谢帅宇，这是一个由附件的文件",null,"你好谢帅宇，我们发给你两个jsp文件",null);
         System.out.println(controller.sendMail(server,mailBody));
     }
 
