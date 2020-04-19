@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReceiveController {
+	
+	
+	private ReceiveService receiveService;
+	
+	
+	
 	/**
 	 * 
 	 * @Description: 与前端交互的接口类
@@ -25,7 +31,7 @@ public class ReceiveController {
 	 public PopResult receiveMail(PopMailServer popmailServer, MailBody mailBody2){
 	        try {
 	            /*从零开始pop3*/
-	            ReceiveService receiveService = new ReceiveService();
+	            receiveService = new ReceiveService();
 	            PopResult popResult = receiveService.receiveMail(popmailServer, mailBody2);
 				List<String> mailStrings = popResult.getMailString();
 				List<PopMail> popMails = new ArrayList<>();
@@ -39,5 +45,17 @@ public class ReceiveController {
 	            e.printStackTrace();
 	            return null;
 	        }
+	 }
+	 
+	 
+	 //添加删除邮件的接口
+	 public boolean deleteMail(int id) {
+		 try {
+			 receiveService.deleteMail(id);
+			 return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	 }
 }

@@ -22,8 +22,10 @@ public class ReceiveService {
     private Socket client; //客户端socket
     private BufferedReader bf; //输入流
     private DataOutputStream dos; //输出流
-    private Scanner socketReader;
 
+    //跨平台换行符
+    String newLine = System.getProperty("line.separator");
+    
     /**
      * @param @param        popMailserver
      * @param @throws       IOException
@@ -47,9 +49,6 @@ public class ReceiveService {
     public PopResult receiveMail(PopMailServer popMailserver, MailBody mailbody2) throws IOException {
         //pop服务器配置
         init(popMailserver);
-
-        //跨平台换行符
-        String newLine = System.getProperty("line.separator");
 
         /*=====================建立连接===========================================*/
         String result = bf.readLine();
@@ -87,12 +86,7 @@ public class ReceiveService {
             }
             mailString.add(getContent());
         }
-
-
-
-        dos.close();
-        bf.close();
-        client.close();
+        
         return new PopResult(mailString, mailNum, allSize, "读取成功！");
     }
 
@@ -115,15 +109,40 @@ public class ReceiveService {
      * @param @param  msg 发送指令
      * @param @return 返回服务器响应信息
      * @param @throws IOException
-     * @param msg
      * @return
      * @throws IOException
      * @Description: 发送pop3指令
      */
     private String sendCommand(String msg) throws IOException {
+    	System.out.println(msg);
         dos.writeBytes(msg);
         dos.flush();
         return bf.readLine();
     }
+    
+    /**
+     * @param   id --邮件编号
+     * @return
+     * @throws IOException
+     * @Description: 删除邮件（标识）
+     */
+    public boolean deleteMail(int id) throws IOException {
+    	/*=====================删除特定邮件===========================================*/
+        String result = sendCommand("dele "+id + newLine);
+        if (!result.startsWith("+OK")) {
+            return false;
+        }
+        destroy();
+        return true;
+	}
 
+    /**
+	 * 断开连接
+     */
+    private void destroy() throws IOException {
+    	sendCommand("quit" + newLine);
+    	dos.close();
+        bf.close();
+        client.close();
+	}
 }

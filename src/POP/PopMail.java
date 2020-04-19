@@ -15,14 +15,16 @@ public class PopMail {
     List<String> fileNames;
 
     public PopMail(String from, String to, String subject, String text, List<String> fileNames) {
-        this.from = from;
+    	this.from = from;
         this.to = to;
         this.subject = subject;
         this.text = text;
         this.fileNames = fileNames;
     }
 
-    public String getFrom() {
+
+
+	public String getFrom() {
         return from;
     }
 
