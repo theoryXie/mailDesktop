@@ -6,15 +6,23 @@ import SMTP.MailBody;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import sun.misc.BASE64Decoder;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.omg.CORBA.Environment;
 
 /**
  *
@@ -48,16 +56,41 @@ public class MailUtil {
     }
 
     public static PopMail decodePop(String mailString) throws IOException {
-        String fromPattern = "From: (.*)To";
+        String fromPattern = "From: (.*)To: \\[";
         String toPattern = "To: (.*)MIME-Version";
         String subjectPattern = "Subject: =\\?utf-8\\?b\\?(.*)\\?=";
-        String textPattern = "Content-Transfer-Encoding: base64(.*)(--a)*";
+        String textPattern = "charset=\"utf-8\"Content-Transfer-Encoding: base64([^-]*)(--a)?";
+		String filePattern = "name=(.*)";
+		String filePattern_2 = "name=\"(.*)\"(.*)";
+		
+		//==============================解析除了附件以外的信息=======================================
         String from =  regixPattern(fromPattern, mailString);
         String to = regixPattern(toPattern, mailString);
         final BASE64Decoder decoder = new BASE64Decoder();
         String subject = new String(decoder.decodeBuffer(regixPattern(subjectPattern, mailString)), StandardCharsets.UTF_8);
         String text = new String(decoder.decodeBuffer(regixPattern(textPattern, mailString).replace("--a","")), StandardCharsets.UTF_8);
-        return new PopMail(from,to,subject,text);
+        
+        //==============================解析附件base64码==========================================
+        Matcher m = regixFilePattern(filePattern, mailString);
+        List<String> fileNames = new ArrayList<String>();
+        if(null!=m) {
+			String[] splits = (m.group(0)).split("--aContent-Transfer-Encoding:base64Content-type:application/octet-stream;");
+			String dirPath = System.getProperty("user.dir")+"\\Files\\";//文件保存的目录
+			File dirFile = new File(dirPath);
+			if(!dirFile.exists()) {
+				dirFile.mkdirs();
+			}
+			for (String string : splits) {
+				String fileName = regixFilePattern(filePattern_2, string).group(1);
+				String base64 = regixFilePattern(filePattern_2, string).group(2);
+				String path = dirPath+"\\"+fileName;//文件存储路径
+				decryptByBase64(base64, path);
+				fileNames.add(fileName);
+			}
+        }
+        
+        
+        return new PopMail(from,to,subject,text,fileNames);
     }
 
     private static String regixPattern(String pattern, String res) {
@@ -67,39 +100,36 @@ public class MailUtil {
             return m.group(1);
         }
         else
-            return "NO MATCH";
+            return "";
     }
 
-
-
-    /**
-     *
-     * 验证邮箱用户邮箱和密码是否正确
-     *
-     * @author  csy
-     * @param  user -- 用户名
-     * @param  pwd  -- 密码
-     */
-    public static boolean checkAccount(String user, String pwd){
-        //TODO 验证用户名和密码
-
-        return false;
-    }
-
-    /**
-     *
-     * 获取文件路径
-     *
-     * @author  csy
-     * @param  files -- 多个文件
-     * @param filesPath -- 文件路径的list
-     */
-    public static void getFilesPath(File[] files,List<String> filesPath){
-        for(int i = 0;i < files.length;i++){
-            if(files[i].exists() && files[i].isFile()){
-                filesPath.add(files[i].getAbsolutePath());
-            }
+    
+    private static Matcher regixFilePattern(String pattern, String res) {
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(res);
+        if (m.find()){
+            return m;
         }
+        else
+            return null;
+    }
+    
+    
+    /**
+     * 把base64转化为文件.
+     *
+     * @param base64   base64
+     * @param filePath 目标文件路径
+     * @return boolean isTrue
+     */
+    public static Boolean decryptByBase64(String base64, String filePath) {
+        try {
+            Files.write(Paths.get(filePath),
+                    Base64.decode(base64.substring(base64.indexOf(",") + 1)), StandardOpenOption.CREATE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Boolean.TRUE;
     }
 
     /**

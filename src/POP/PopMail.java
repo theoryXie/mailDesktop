@@ -1,5 +1,7 @@
 package POP;
 
+import java.util.List;
+
 public class PopMail {
     //发件人
     String from;
@@ -9,12 +11,15 @@ public class PopMail {
     String subject;
     //正文
     String text;
+    //附件名
+    List<String> fileNames;
 
-    public PopMail(String from, String to, String subject, String text) {
+    public PopMail(String from, String to, String subject, String text, List<String> fileNames) {
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.text = text;
+        this.fileNames = fileNames;
     }
 
     public String getFrom() {
@@ -49,14 +54,21 @@ public class PopMail {
         this.text = text;
     }
 
+	public List<String> getFileNames() {
+		return fileNames;
+	}
 
-    @Override
-    public String toString() {
-        return "PopMail{" +
-                "from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                ", subject='" + subject + '\'' +
-                ", text='" + text + '\'' +
-                '}';
-    }
+	public void setFileNames(List<String> fileNames) {
+		this.fileNames = fileNames;
+	}
+
+	@Override
+	public String toString() {
+		return "PopMail [from=" + from + ", to=" + to + ", subject=" + subject + ", text=" + text + ", fileNames="
+				+ fileNames + "]";
+	}
+
+    
+
+   
 }
