@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 
 public class OpenMail extends JFrame implements ActionListener {
@@ -21,9 +22,12 @@ public class OpenMail extends JFrame implements ActionListener {
     public JEditorPane mailBody;
 
     public PopMail popMail;
+    public JFrame jf1;
+    public String path;
 
     //构造方法
     public OpenMail(PopMail popMail) throws Exception{
+        this.jf1 = this;
         this.popMail = popMail;
         init();
     }
@@ -68,12 +72,51 @@ public class OpenMail extends JFrame implements ActionListener {
         receiverPane.add(receiverLabel);
         jp1.add(receiverPane);
 
+        //TODO：判断是否含有附件
+        Boolean hasAnnex = false;//popMail.hasAnnex();
+        //附件信息
         appendixPane = new JPanel();
         appendixPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
-        appendixLabel = new JLabel("附件：");
+        //TODO：+popMail.get附件()
+        String annexName = "";
+        if(hasAnnex){
+//            annexName = popMail.getAnnexName();
+        }
+        appendixLabel = new JLabel("附件：" + annexName);
         appendixLabel.setFont(new Font("楷体",Font.BOLD,20));
         appendixPane.add(appendixLabel);
         jp1.add(appendixPane);
+        //是否出现下载按钮
+        if(hasAnnex){
+            JButton downLoadBtn = new JButton("下载");
+            appendixPane.add(downLoadBtn);
+            //点击下载附件
+            downLoadBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //弹出选择文件框
+                    JFileChooser jfc = new JFileChooser();
+                    jfc.setDialogTitle("下载");
+                    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    int flag = jfc.showSaveDialog(jf1);
+                    if (flag == JFileChooser.APPROVE_OPTION) {
+                        File file = jfc.getSelectedFile();
+                        path = file.getPath();
+                    } else {
+                        return;
+                    }
+                    //TODO:下载
+                    try{
+                        //popMail.downloadAnnex();
+                        JOptionPane.showMessageDialog(null, "下载附件成功！", "提示消息", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "下载附件失败！", "提示消息", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+        }
+
 
         datePane = new JPanel();
         datePane.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));

@@ -144,7 +144,7 @@ public class receiveUI extends JFrame implements ActionListener {
                 //开启一个线程，避免阻塞整个界面
                 Thread t1= new Thread() {
                     public void run() {
-                        System.out.print("点击成功");
+//                        System.out.print("点击成功");
                         ReceiveMail();
                     }
                 };
