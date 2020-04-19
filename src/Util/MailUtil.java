@@ -181,4 +181,14 @@ public class MailUtil {
         fi.close();
         return buffer;
     }
+    
+    //获取文件路径
+    public static void getFilesPath(File[] files,List<String> filesPath){
+	    for(int i = 0;i < files.length;i++){
+	    	if(files[i].exists() && files[i].isFile()) {
+	    		filesPath.add(files[i].getAbsolutePath());
+	    	}
+	    }
+    }
+
 }

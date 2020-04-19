@@ -326,7 +326,7 @@ public class MainGUI extends JFrame implements ActionListener {
                 if(res == fileChooser.APPROVE_OPTION){
                     //获取选中的所有文件
                     files = fileChooser.getSelectedFiles();
-//                    MailUtil.getFilesPath(files,filesAddress);
+                    MailUtil.getFilesPath(files,filesAddress);
                     String showFilesName = MailUtil.getFilesName(files);
                     if(fileLable.getText().equals("文件名")){
                         fileLable.setText("");
