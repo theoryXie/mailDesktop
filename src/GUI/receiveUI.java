@@ -210,6 +210,7 @@ public class receiveUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null,popResult.getMessage(),"提示",JOptionPane.INFORMATION_MESSAGE);
             //如果接受邮件成功
             if("读取成功！".equals(popResult.getMessage())){
+                mailData.clear();
                 List<PopMail> popMails = popResult.getMails();
                 for(int i = popResult.getAllNum();i>0;i--){
                     PopMail popMail = popMails.get(i - 1);

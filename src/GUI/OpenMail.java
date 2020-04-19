@@ -102,6 +102,14 @@ public class OpenMail extends JFrame implements ActionListener {
                     }
                 }
             }
+            //鼠标进入文本范围，更改鼠标样式；
+            public void mouseEntered(MouseEvent e){
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            //鼠标移出文本范围，恢复鼠标样式；
+            public  void mouseExited(MouseEvent e){
+                setCursor(Cursor.getDefaultCursor());
+            }
         });
 
 
