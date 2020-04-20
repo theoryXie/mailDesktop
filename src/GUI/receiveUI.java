@@ -163,7 +163,7 @@ public class receiveUI extends JFrame implements ActionListener {
                     if(!rcvMailList.isSelectionEmpty()){
                         //删除邮件
 //                        mailData.removeElementAt(rcvMailList.getSelectedIndex());
-                        receiveController.deleteMail(rcvMailList.getSelectedIndex());
+                        receiveController.deleteMail(popResult.getAllNum()-rcvMailList.getSelectedIndex());
                         JOptionPane.showMessageDialog(null,"删除成功","提示消息",JOptionPane.INFORMATION_MESSAGE);
                         ReceiveMail();
                     }

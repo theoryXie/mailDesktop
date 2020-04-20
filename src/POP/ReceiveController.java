@@ -33,12 +33,14 @@ public class ReceiveController {
 	            /*从零开始pop3*/
 	            receiveService = new ReceiveService();
 	            PopResult popResult = receiveService.receiveMail(popmailServer, mailBody2);
-				List<String> mailStrings = popResult.getMailString();
-				List<PopMail> popMails = new ArrayList<>();
-				for(String s : mailStrings){
-					popMails.add(MailUtil.decodePop(s));
+				if(popResult.getMessage().equals("读取成功")) {
+					List<String> mailStrings = popResult.getMailString();
+					List<PopMail> popMails = new ArrayList<>();
+					for(String s : mailStrings){
+						popMails.add(MailUtil.decodePop(s));
+					}
+					popResult.setMails(popMails);
 				}
-				popResult.setMails(popMails);
 				return popResult;
 
 	        } catch (Exception e) {
