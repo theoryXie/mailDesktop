@@ -42,7 +42,7 @@ public class popTest {
         PopMailServer ps = new PopMailServer("pop.qq.com","110");
         MailBody mb2 = new MailBody();
         mb2.setSendUser("827041735@qq.com");
-        mb2.setSendUserPwd("izaalzwhtryvbdbb");
+        mb2.setSendUserPwd("---");
         PopResult result = rec.receiveMail(ps,mb2);
         for(PopMail popMail:result.getMails()){
             System.out.println(popMail);
@@ -56,7 +56,7 @@ public class popTest {
     	PopMailServer ps = new PopMailServer("pop.qq.com","110");
         MailBody mb2 = new MailBody();
         mb2.setSendUser("827041735@qq.com");
-        mb2.setSendUserPwd("izaalzwhtryvbdbb");
+        mb2.setSendUserPwd("---");
         rec.receiveMail(ps,mb2);
     	Assert.assertEquals(true, rec.deleteMail(1));
     }
